@@ -1,11 +1,11 @@
 namespace QuadtreeCompressor;
 
-class Compressor
+class Quadtree
 {
     // constructor
-    public Compressor()
+    public Quadtree()
     {
-        
+
     }
 
     public void OptimizeImage()
