@@ -1,0 +1,5 @@
+namespace QuadtreeOptimizer;
+
+class OutputHandler
+{
+}

@@ -1,9 +1,9 @@
-namespace QuadtreeOptimizer;
+namespace QuadtreeCompressor;
 
-class Optimizer
+class Compressor
 {
     // constructor
-    public Optimizer()
+    public Compressor()
     {
         
     }
