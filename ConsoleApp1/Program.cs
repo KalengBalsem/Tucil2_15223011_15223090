@@ -1,7 +1,8 @@
-﻿class Program
+﻿namespace QuadtreeOptimizer;
+class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        InputHandler.ReadFile();
     }
 }

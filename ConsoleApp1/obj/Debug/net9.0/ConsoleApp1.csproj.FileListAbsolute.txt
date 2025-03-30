@@ -12,3 +12,4 @@ c:\Users\balse\Documents\VScode\Tucil2_Stima\ConsoleApp1\obj\Debug\net9.0\refint
 c:\Users\balse\Documents\VScode\Tucil2_Stima\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.pdb
 c:\Users\balse\Documents\VScode\Tucil2_Stima\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.genruntimeconfig.cache
 c:\Users\balse\Documents\VScode\Tucil2_Stima\ConsoleApp1\obj\Debug\net9.0\ref\ConsoleApp1.dll
+c:\Users\balse\Documents\VScode\Tucil2_Stima\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.sourcelink.json
