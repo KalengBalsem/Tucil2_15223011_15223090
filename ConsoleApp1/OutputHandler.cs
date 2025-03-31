@@ -1,4 +1,4 @@
-namespace QuadtreeOptimizer;
+namespace QuadtreeCompressor;
 
 class OutputHandler
 {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj": {}
+    "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj": {}
   },
   "projects": {
-    "c:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj": {
+    "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectUniqueName": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj",
         "projectName": "ConsoleApp1",
-        "projectPath": "c:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectPath": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj",
         "packagesPath": "C:\\Users\\balse\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\obj\\",
+        "outputPath": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,6 +49,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
