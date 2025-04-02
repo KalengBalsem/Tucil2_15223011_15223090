@@ -9,10 +9,10 @@ class Program
         string? imgPath = Console.ReadLine();
         
         if (imgPath != null){
-            InputHandler.imageToByteMatrix(imgPath);
+            InputHandler.ImageToByteMatrix(imgPath);
         }
 
         // check if the input file is valid image input
-        InputHandler.isValidImageInput();
+        InputHandler.IsValidImageInput();
     }
 }

@@ -17,6 +17,14 @@ class Quadtree
         this.compressionPercentage = compressionPercentage;
     }
 
+    // RECURSION FUNCTION (BUILDING THE TREE)
+    public void BuildTree()
+    {
+
+    }
+
+
+
     public void CalculateError(byte[,] byteMatrix)
     {
 
