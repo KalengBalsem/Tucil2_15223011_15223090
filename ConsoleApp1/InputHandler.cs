@@ -11,9 +11,8 @@ class InputHandler
         Console.WriteLine("this is where the image validity is checked");
     }
 
-    public static byte[,] ImageToByteMatrix(string imgPath) 
+    public static byte[] ImageToPixelBytes(string imgPath) 
     {
-        byte[,] byteMatrix;
         try
         {
             byte[] fileBytes = File.ReadAllBytes(imgPath);
@@ -32,48 +31,15 @@ class InputHandler
                     System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBytes, 0, totalBytes);  // copying raw bytes from Scan0 to pixelBytes
                     bmp.UnlockBits(bmpData);
 
-                    byteMatrix = BytesToMatrix(pixelBytes, bmp.Width, bmp.Height, bytesPerPixel, bmpData.Stride);
-
-                    // PRINT BYTE MATRIX (for debugging)
-                    Console.WriteLine($"byteMatrix size: [{bmp.Height} rows, {bmp.Width * bytesPerPixel} columns]");
-                    for (int y = 0; y < Math.Min(byteMatrix.GetLength(0), 3); y++)  // First 3 rows
-                    {
-                        Console.WriteLine($"\nRow {y} (decimal, grouped by pixel):");
-                        for (int x = 0; x < byteMatrix.GetLength(1); x += 3)  // Step by 3 (BGR)
-                        {
-                            if (x + 2 < byteMatrix.GetLength(1))  // Ensure 3 bytes available
-                            {
-                                int b = byteMatrix[y, x];     // Blue
-                                int g = byteMatrix[y, x + 1]; // Green
-                                int r = byteMatrix[y, x + 2]; // Red
-                                Console.Write($"{b} {g} {r} | ");  // Pixel group, separated by |
-                            }
-                        }
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                    }
-                    // ENDPRINT
+                    return pixelBytes;
                 }
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Failed to load image {imgPath}. Error: {ex.Message}");
-            byteMatrix = new byte[0,0];  // empty byteMatrix
+            byte[] pixelBytes = new byte[0];
+            return pixelBytes;  // empty pixelBytes
         }
-        return byteMatrix;
-    }
-
-    static byte[,] BytesToMatrix(byte[] bytes, int width, int height, int bytesPerPixel, int stride)
-    {
-        byte[,] matrix = new byte[height, width * bytesPerPixel];
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width * bytesPerPixel; x++)
-            {
-                matrix[y, x] = bytes[y * stride + x];
-            }
-        }
-        return matrix;
     }
 }

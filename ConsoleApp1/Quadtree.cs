@@ -1,15 +1,16 @@
+using System;
 namespace QuadtreeCompressor;
 
 class Quadtree
 {
     // ATTRIBUTES
     string errorMethod;
-    int treshold;
+    double treshold;
     int minimumBlockSize;
-    float compressionPercentage;
+    double compressionPercentage;
 
     // CONSTRUCTOR
-    public Quadtree(string errorMethod, int treshold, int minimumBlockSize, float compressionPercentage)
+    public Quadtree(string errorMethod, double treshold, int minimumBlockSize, double compressionPercentage)
     {
         this.errorMethod = errorMethod;
         this.treshold = treshold;
@@ -18,42 +19,90 @@ class Quadtree
     }
 
     // RECURSION FUNCTION (BUILDING THE TREE)
-    public void BuildTree()
+    public void BuildTree(byte[] byteMatrix)
     {
+        double error = CalculateError(byteMatrix);
+        // basis
+        if (error <= this.treshold || (byteMatrix.Length / 4) < this.minimumBlockSize) 
+        {
+            return; // proses pembagian blok dihentikan (pengembalian value)
+        }
+        // recurrens
+        else
+        {
+            // bagi blok menjadi 4 subblok
 
+            // BuildTree();
+            // BuildTree();
+            // BuildTree();
+            // BuildTree();
+        }
     }
 
 
-
-    public void CalculateError(byte[,] byteMatrix)
+    public double CalculateError(byte[] byteMatrix)
     {
+        double error = 0.0f;
+        if (errorMethod == "Variance")
+        {
+            return Variance(byteMatrix);
+        }
+        else if (errorMethod == "MAD")
+        {
 
+        }
+
+        return Variance(byteMatrix);
     }
 
     // ERROR MEASUREMENT METHOD
-    public void Variance()
+    public double Variance(byte[] byteMatrix)
     {
+        double variance = 0.0f;
+        double var;  // to store var R G B
+        double mu;  // average pixel values
+        int N = byteMatrix.Length / 3;
 
+        for (int i = 0; i < 3; i++)  // 0 = R, 1 = G, 2 = B
+        {
+            var = 0;
+            mu = 0;
+
+            for (int j = 0; j < N; j++)
+            {
+                mu += byteMatrix[j];
+            }
+            mu = mu / N;
+
+            for (int j = 0; j < N; j++)
+            {
+                var += Math.Pow(byteMatrix[j] - mu, 2);
+            }
+
+            variance += var / N;
+        }
+
+        return variance / 3;
     }
 
-    public void MAD()  // Mean Absolute Deviation
+    public double MAD(byte[] byteMatrix)  // Mean Absolute Deviation
     {
-
+        return 0.0f;
     }
 
-    public void MaxPixelDifference()
+    public double MaxPixelDifference(byte[] byteMatrix)
     {
-
+        return 0.0f;
     }
 
-    public void Entropy()
+    public double Entropy(byte[] byteMatrix)
     {
-
+        return 0.0f;
     }
 
-    public void SSIM()  // Structural Similarity Index
+    public double SSIM(byte[] byteMatrix)  // Structural Similarity Index
     {
-
+        return 0.0f;
     }
 
 }
