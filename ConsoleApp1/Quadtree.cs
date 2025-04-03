@@ -19,11 +19,11 @@ class Quadtree
     }
 
     // RECURSION FUNCTION (BUILDING THE TREE)
-    public void BuildTree(byte[] byteMatrix)
+    public void BuildTree(byte[] pixelBytes)
     {
-        double error = CalculateError(byteMatrix);
+        double error = CalculateError(pixelBytes);
         // basis
-        if (error <= this.treshold || (byteMatrix.Length / 4) < this.minimumBlockSize) 
+        if (error <= this.treshold || (pixelBytes.Length / 4) < this.minimumBlockSize) 
         {
             return; // proses pembagian blok dihentikan (pengembalian value)
         }
@@ -40,28 +40,28 @@ class Quadtree
     }
 
 
-    public double CalculateError(byte[] byteMatrix)
+    public double CalculateError(byte[] pixelBytes)
     {
         double error = 0.0f;
         if (errorMethod == "Variance")
         {
-            return Variance(byteMatrix);
+            return Variance(pixelBytes);
         }
         else if (errorMethod == "MAD")
         {
 
         }
 
-        return Variance(byteMatrix);
+        return Variance(pixelBytes);
     }
 
     // ERROR MEASUREMENT METHOD
-    public double Variance(byte[] byteMatrix)
+    public double Variance(byte[] pixelBytes)
     {
         double variance = 0.0f;
         double var;  // to store var R G B
         double mu;  // average pixel values
-        int N = byteMatrix.Length / 3;
+        int N = pixelBytes.Length / 3;
 
         for (int i = 0; i < 3; i++)  // 0 = R, 1 = G, 2 = B
         {
@@ -70,13 +70,13 @@ class Quadtree
 
             for (int j = 0; j < N; j++)
             {
-                mu += byteMatrix[j];
+                mu += pixelBytes[j];
             }
             mu = mu / N;
 
             for (int j = 0; j < N; j++)
             {
-                var += Math.Pow(byteMatrix[j] - mu, 2);
+                var += Math.Pow(pixelBytes[j] - mu, 2);
             }
 
             variance += var / N;
@@ -85,22 +85,22 @@ class Quadtree
         return variance / 3;
     }
 
-    public double MAD(byte[] byteMatrix)  // Mean Absolute Deviation
+    public double MAD(byte[] pixelBytes)  // Mean Absolute Deviation
     {
         return 0.0f;
     }
 
-    public double MaxPixelDifference(byte[] byteMatrix)
+    public double MaxPixelDifference(byte[] pixelBytes)
     {
         return 0.0f;
     }
 
-    public double Entropy(byte[] byteMatrix)
+    public double Entropy(byte[] pixelBytes)
     {
         return 0.0f;
     }
 
-    public double SSIM(byte[] byteMatrix)  // Structural Similarity Index
+    public double SSIM(byte[] pixelBytes)  // Structural Similarity Index
     {
         return 0.0f;
     }

@@ -4,12 +4,13 @@ namespace QuadtreeCompressor;
 
 class TreeNode<T>
 {
-    private readonly T _value;
-    private readonly List<TreeNode<T>> _children = new List<TreeNode<T>>();
+    private T _value;
+    private List<TreeNode<T>> _children;
 
     public TreeNode(T value)
     {
         _value = value;
+        _children = new List<TreeNode<T>>();
     }
 
     public TreeNode<T> this[int i]  // children access by index
