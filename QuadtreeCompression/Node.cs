@@ -18,7 +18,10 @@ class Node
 
     public bool IsLeaf()
     {
-        return childNodes == null;
+        foreach (var c in childNodes)
+            if (c != null) 
+                return false;
+        return true;
     }
 
     public void SetNodeAverageColor(byte[,,] pixelBytes) {

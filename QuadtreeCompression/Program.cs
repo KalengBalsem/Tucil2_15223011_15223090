@@ -16,8 +16,9 @@ class Program
         // check if the input file is valid image input
         InputHandler.IsValidImageInput();
 
-        Quadtree quadtree = new Quadtree(pixelMatrix, "Variance", 5000, 8, 50);
-        foreach (Node child in quadtree.rootNode.childNodes)
+        // test quadtree instance
+        Quadtree quadtree = new Quadtree(pixelMatrix, "Variance", 100, 8, 50);
+        foreach (Node child in quadtree.GetRootNode().childNodes)
         {
             Console.WriteLine(child.nodeAverageColor);
         }

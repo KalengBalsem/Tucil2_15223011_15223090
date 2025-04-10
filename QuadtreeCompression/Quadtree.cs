@@ -8,7 +8,7 @@ class Quadtree
     double treshold;
     int minimumBlockSize;
     double compressionPercentage;
-    public Node rootNode;
+    Node rootNode;
 
     public Quadtree(byte[,,] pixelMatrix, string errorMethod, double treshold, int minimumBlockSize, double compressionPercentage)
     {
@@ -33,14 +33,11 @@ class Quadtree
 
         double error = Variance.CalculateError(pixelMatrix, Y, X, nodeHeight, nodeWidth);
 
-        if (error >= treshold && nodeWidth >= minimumBlockSize && nodeHeight >= minimumBlockSize)
+        if (error >= treshold && (nodeWidth / 2) >= minimumBlockSize && (nodeHeight / 2) >= minimumBlockSize)
         {
             SplitNode(node, pixelMatrix, depth + 1);
         }
-        else
-        {
-            node.SetNodeAverageColor(pixelMatrix);
-        }
+        node.SetNodeAverageColor(pixelMatrix);
 
         return node;
     }
@@ -61,6 +58,12 @@ class Quadtree
         quadTreeNode.childNodes[1] = BuildQuadtree(pixelMatrix, y, x + halfWidth, halfHeight, remainderWidth, depth);
         quadTreeNode.childNodes[2] = BuildQuadtree(pixelMatrix, y + halfHeight, x, remainderHeight, halfWidth, depth);
         quadTreeNode.childNodes[3] = BuildQuadtree(pixelMatrix, y + halfHeight, x + halfWidth, remainderHeight, remainderWidth, depth);
+    }
+
+    // getters
+    public Node GetRootNode()
+    {
+        return rootNode;
     }
 
     // for debugging:
@@ -94,7 +97,7 @@ class Quadtree
         Console.WriteLine($"{indent}Node at ({node.X}, {node.Y}), size {node.nodeWidth}x{node.nodeHeight}, color {node.nodeAverageColor:X6}, leaf: {node.IsLeaf()}");
         if(!node.IsLeaf())
         {
-            foreach (var child in node.childNodes)
+            foreach (Node child in node.childNodes)
             {
                 PrintNode(child, depth+1);
             }
