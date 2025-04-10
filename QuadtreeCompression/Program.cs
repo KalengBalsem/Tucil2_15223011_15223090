@@ -17,11 +17,12 @@ class Program
         InputHandler.IsValidImageInput();
 
         // test quadtree instance
-        Quadtree quadtree = new Quadtree(pixelMatrix, "Variance", 100, 8, 50);
+        Quadtree quadtree = new Quadtree(pixelMatrix, "Variance", 100, 2, 50);
         // quadtree.PrintTree();
 
         quadtree.ReconstructImage(pixelMatrix);
 
         OutputHandler outputHandler = new OutputHandler();
+        outputHandler.SaveImage(pixelMatrix, pixelMatrix.GetLength(0), pixelMatrix.GetLength(1), "test\\test6.jpg", "test6_output.jpg");
     }
 }

@@ -50,6 +50,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Magick.NET.Core": {
+              "target": "Package",
+              "version": "[14.6.0, )"
+            },
             "System.Drawing.Common": {
               "target": "Package",
               "version": "[9.0.4, )"

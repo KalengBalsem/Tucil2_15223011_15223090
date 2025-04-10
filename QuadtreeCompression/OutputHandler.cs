@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 
+
 namespace QuadtreeCompression;
 
 class OutputHandler
@@ -8,6 +9,13 @@ class OutputHandler
     // Image output
     public void SaveImage(byte[,,] pixelMatrix, int height, int width, string inputImagePath, string outputImagePath)
     {
+        if (pixelMatrix == null)
+            throw new ArgumentNullException(nameof(pixelMatrix));
+        if (height <= 0 || width <= 0)
+            throw new ArgumentException("Height and width must be positive");
+        if (string.IsNullOrWhiteSpace(outputImagePath))
+            throw new ArgumentException("Output path is required", nameof(outputImagePath));
+
         using (Bitmap reconstructedBitmap = new Bitmap(width, height))
         {
             for (int y = 0; y < height; y++)
@@ -22,12 +30,11 @@ class OutputHandler
                 }
             }
 
-            string extension = Path.GetExtension(inputImagePath).ToLower();
+            var extension = Path.GetExtension(inputImagePath)?.ToLowerInvariant();
             ImageFormat format;
-
             switch (extension)
             {
-                case "jpg":
+                case ".jpg":
                 case ".jpeg":
                     format = ImageFormat.Jpeg;
                     outputImagePath = Path.ChangeExtension(outputImagePath, ".jpg");
@@ -42,12 +49,12 @@ class OutputHandler
                     break;
             }
 
-            if (format == ImageFormat.Jpeg )
+            if (format.Equals(ImageFormat.Jpeg))
             {
-                EncoderParameters encoderParameters = new EncoderParameters(1);
-                encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 75L);
-                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-                reconstructedBitmap.Save(outputImagePath, jpgEncoder, encoderParameters);
+                var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                var encoderParams = new EncoderParameters(1);
+                encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, 75L);
+                reconstructedBitmap.Save(outputImagePath, jpgEncoder, encoderParams);
             }
             else
             {
@@ -58,15 +65,12 @@ class OutputHandler
 
     private ImageCodecInfo GetEncoder(ImageFormat format)
     {
-        ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
-        foreach (ImageCodecInfo codec in codecs)
+        foreach (var codec in ImageCodecInfo.GetImageEncoders())
         {
             if (codec.FormatID == format.Guid)
-            {
-                return codec;
-            }
+            return codec;
         }
-        return null;
+        throw new InvalidOperationException($"No encoder found for format {format}.");
     }
 
     // GIF output
