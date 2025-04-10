@@ -32,10 +32,11 @@ class InputHandler
 
                     // copying raw bytes from Scan0 to pixelBytes
                     System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBytes, 0, totalBytes);
+                    
+                    byte[,,] pixelMatrix = GetPixelMatrix(pixelBytes, bmp.Height, bmp.Width, bmpData.Stride, bytesPerPixel);
 
                     bmp.UnlockBits(bmpData);
-
-                    return GetPixelMatrix(pixelBytes, bmp.Height, bmp.Width);
+                    return pixelMatrix;
                 }
             }
         }
@@ -46,16 +47,16 @@ class InputHandler
         }
     }
 
-    public static byte[,,] GetPixelMatrix(byte[] pixelBytes, int height, int width)
+    public static byte[,,] GetPixelMatrix(byte[] pixelBytes, int height, int width, int stride, int bytesPerPixel)
     {
         byte[,,] pixelMatrix = new byte[height, width, 3];
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                int arrayIndex = (y * width + x) * 3;
+                int arrayIndex = y * stride + x * bytesPerPixel;
 
-                // pixelBytes (bmp) BGR -> pixelMatrix RGB
+                // BGR (bmp) -> RGB
                 pixelMatrix[y, x, 2] = pixelBytes[arrayIndex];      // R
                 pixelMatrix[y, x, 1] = pixelBytes[arrayIndex + 1];  // G
                 pixelMatrix[y, x, 0] = pixelBytes[arrayIndex + 2];  // B
