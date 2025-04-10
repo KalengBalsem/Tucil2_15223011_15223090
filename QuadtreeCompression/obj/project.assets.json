@@ -133,31 +133,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\balse\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Ignacio\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD:QuadtreeCompression/obj/project.assets.json
       "projectUniqueName": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima master\\Tucil2_Stima\\QuadtreeCompression\\QuadtreeCompression.csproj",
       "projectName": "QuadtreeCompression",
       "projectPath": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima master\\Tucil2_Stima\\QuadtreeCompression\\QuadtreeCompression.csproj",
       "packagesPath": "C:\\Users\\balse\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima master\\Tucil2_Stima\\QuadtreeCompression\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\Ignacio\\Documents\\IF2211\\Tucil2_15223011_15223090\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectName": "ConsoleApp1",
+      "projectPath": "C:\\Users\\Ignacio\\Documents\\IF2211\\Tucil2_15223011_15223090\\ConsoleApp1\\ConsoleApp1.csproj",
+      "packagesPath": "C:\\Users\\Ignacio\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ignacio\\Documents\\IF2211\\Tucil2_15223011_15223090\\ConsoleApp1\\obj\\",
+>>>>>>> 57597ad39a4186ab3c30697c16c9c422df81077e:ConsoleApp1/obj/project.assets.json
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\balse\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Ignacio\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -176,7 +177,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net9.0": {
@@ -203,7 +204,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
