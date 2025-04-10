@@ -20,6 +20,8 @@ class Program
         Quadtree quadtree = new Quadtree(pixelMatrix, "Variance", 100, 8, 50);
         // quadtree.PrintTree();
 
+        quadtree.ReconstructImage(pixelMatrix);
 
+        OutputHandler outputHandler = new OutputHandler();
     }
 }
