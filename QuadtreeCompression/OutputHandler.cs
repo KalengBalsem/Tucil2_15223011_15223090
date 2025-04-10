@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
+using ImageMagick;
 
 
 namespace QuadtreeCompression;
@@ -74,4 +75,111 @@ class OutputHandler
     }
 
     // GIF output
+    // Use Magick.NET to create the animated GIF
+    public void CreateTransformationGif(Quadtree quadtree, byte[,,] pixelMatrix, int width, int height, string outputGifPath)
+    {
+        int maxDepth = GetMaxDepth(quadtree);
+
+        List<Bitmap> frames = new List<Bitmap>();
+
+        for (int depth = 0; depth <= maxDepth; depth++)
+        {
+            byte[,,] framePixelMatrix = new byte[height, width, 3];
+            ReconstructImageAtDepth(quadtree.GetRootNode(), framePixelMatrix, depth);
+
+            Bitmap frame = new Bitmap(width, height);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    frame.SetPixel(x, y, Color.FromArgb(
+                        framePixelMatrix[y, x, 0],
+                        framePixelMatrix[y, x, 1],
+                        framePixelMatrix[y, x, 2]));
+                }
+            }
+            frames.Add(frame);
+        }
+        using (var collection = new MagickImageCollection())
+        {
+            foreach (var frame in frames)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    frame.Save(ms, ImageFormat.Png); // Save frame as PNG in memory
+                    ms.Position = 0;
+                    var magickImage = new MagickImage(ms);
+                    magickImage.AnimationDelay = 100; // 100 centiseconds = 1 second per frame
+                    collection.Add(magickImage);
+                }
+                frame.Dispose(); // Dispose of the Bitmap after using it
+            }
+
+            collection.Optimize();
+
+            collection.Write(outputGifPath);
+        }
+    }
+
+    private int GetMaxDepth(Quadtree quadtree)
+    {
+        return GetNodeDepth(quadtree.GetRootNode(), 0);
+    }
+
+    private int GetNodeDepth(Node node, int currentDepth)
+    {
+        if (node.IsLeaf())
+        {
+            return currentDepth;
+        }
+
+        int maxChildDepth = currentDepth;
+        if (!node.IsLeaf())
+        {
+            foreach (var child in node.childNodes)
+            {
+                if (child != null)
+                {
+                    int childDepth = GetNodeDepth(child, currentDepth + 1);
+                    maxChildDepth = Math.Max(maxChildDepth, childDepth);
+                }
+            }
+        }
+        return maxChildDepth;
+    }
+
+    // Helper method to reconstruct the image up to a specific depth (should've been joined to image reconstruction in QuadTree.cs)
+    private void ReconstructImageAtDepth(Node node, byte[,,] pixelMatrix, int maxDepth, int currentDepth = 0)
+    {
+        if (currentDepth > maxDepth || node.IsLeaf())
+        {
+            // Fill the region with the node's average color
+            int r = (node.nodeAverageColor >> 16) & 0xFF;
+            int g = (node.nodeAverageColor >> 8) & 0xFF;
+            int b = node.nodeAverageColor & 0xFF;
+            int maxY = Math.Min(node.Y + node.nodeHeight, pixelMatrix.GetLength(0));
+            int maxX = Math.Min(node.X + node.nodeWidth, pixelMatrix.GetLength(1));
+            for (int y = node.Y; y < maxY; y++)
+            {
+                for (int x = node.X; x < maxX; x++)
+                {
+                    pixelMatrix[y, x, 0] = (byte)r;
+                    pixelMatrix[y, x, 1] = (byte)g;
+                    pixelMatrix[y, x, 2] = (byte)b;
+                }
+            }
+            return;
+        }
+
+        if (!node.IsLeaf())
+        {
+            foreach (var child in node.childNodes)
+            {
+                if (child != null)
+                {
+                    ReconstructImageAtDepth(child, pixelMatrix, maxDepth, currentDepth + 1);
+                }
+            }
+        }
+    }
 }

@@ -23,6 +23,6 @@ class Program
         quadtree.ReconstructImage(pixelMatrix);
 
         OutputHandler outputHandler = new OutputHandler();
-        outputHandler.SaveImage(pixelMatrix, pixelMatrix.GetLength(0), pixelMatrix.GetLength(1), "test\\test6.jpg", "test6_output.jpg");
+        outputHandler.SaveImage(pixelMatrix, pixelMatrix.GetLength(0), pixelMatrix.GetLength(1), "test\\test5.jpg", "test\\test_output.jpg");
     }
 }
