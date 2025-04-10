@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "1m/RherQ+Co=",
+  "dgSpecHash": "s9A5xrMY/o8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\balse\\Documents\\VScode\\Tucil2_Stima\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\Ignacio\\Documents\\IF2211\\Tucil2_15223011_15223090\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\balse\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.3\\microsoft.win32.systemevents.9.0.3.nupkg.sha512",
-    "C:\\Users\\balse\\.nuget\\packages\\system.drawing.common\\9.0.3\\system.drawing.common.9.0.3.nupkg.sha512"
+    "C:\\Users\\Ignacio\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.3\\microsoft.win32.systemevents.9.0.3.nupkg.sha512",
+    "C:\\Users\\Ignacio\\.nuget\\packages\\system.drawing.common\\9.0.3\\system.drawing.common.9.0.3.nupkg.sha512"
   ],
   "logs": []
 }
