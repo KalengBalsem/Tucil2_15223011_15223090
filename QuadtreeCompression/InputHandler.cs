@@ -54,9 +54,11 @@ class InputHandler
             for (int x = 0; x < width; x++)
             {
                 int arrayIndex = (y * width + x) * 3;
-                pixelMatrix[y, x, 0] = pixelBytes[arrayIndex];      // R
+
+                // pixelBytes (bmp) BGR -> pixelMatrix RGB
+                pixelMatrix[y, x, 2] = pixelBytes[arrayIndex];      // R
                 pixelMatrix[y, x, 1] = pixelBytes[arrayIndex + 1];  // G
-                pixelMatrix[y, x, 2] = pixelBytes[arrayIndex + 2];  // B
+                pixelMatrix[y, x, 0] = pixelBytes[arrayIndex + 2];  // B
             }
         }
 

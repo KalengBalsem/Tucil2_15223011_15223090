@@ -60,6 +60,43 @@ class Quadtree
         quadTreeNode.childNodes[3] = BuildQuadtree(pixelMatrix, y + halfHeight, x + halfWidth, remainderHeight, remainderWidth, depth);
     }
 
+    // compressed image data reconstruction
+    public void ReconstructImage(byte[,,] pixelMatrix)
+    {
+        ReconstructNode(rootNode, pixelMatrix);
+    }
+
+    private void ReconstructNode(Node node, byte[,,] pixelMatrix)
+    {
+        if (node.IsLeaf())
+        {
+            int r = (node.nodeAverageColor >> 16) & 0xFF;
+            int g = (node.nodeAverageColor >> 8) & 0xFF;
+            int b = node.nodeAverageColor & 0xFF;
+            int maxY = Math.Min(node.Y + node.nodeHeight, pixelMatrix.GetLength(0));
+            int maxX = Math.Min(node.X + node.nodeWidth, pixelMatrix.GetLength(1));
+            for (int y = node.Y; y < maxY; y++)
+            {
+                for (int x = node.X; x < maxX; x++)
+                {
+                    pixelMatrix[y, x, 0] = (byte)r;
+                    pixelMatrix[y, x, 1] = (byte)g;
+                    pixelMatrix[y, x, 2] = (byte)b;
+                }
+            }
+        }
+        else
+        {
+            if (!node.IsLeaf())
+            {
+                foreach (var child in node.childNodes)
+                {
+                    ReconstructNode(child, pixelMatrix);
+                }
+            }
+        }
+    }
+
     // getters
     public Node GetRootNode()
     {

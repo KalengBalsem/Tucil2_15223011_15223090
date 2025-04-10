@@ -18,10 +18,8 @@ class Program
 
         // test quadtree instance
         Quadtree quadtree = new Quadtree(pixelMatrix, "Variance", 100, 8, 50);
-        foreach (Node child in quadtree.GetRootNode().childNodes)
-        {
-            Console.WriteLine(child.nodeAverageColor);
-        }
-        quadtree.PrintTree();
+        // quadtree.PrintTree();
+
+
     }
 }
