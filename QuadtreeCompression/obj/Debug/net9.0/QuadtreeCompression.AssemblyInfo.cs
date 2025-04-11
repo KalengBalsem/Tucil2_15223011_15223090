@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuadtreeCompression")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28aa6a0eafa35c8d861e602b3e31618b2c217c21")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+256b082dd6d5a113e6728427d95b19c43fddfdfb")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuadtreeCompression")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuadtreeCompression")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
