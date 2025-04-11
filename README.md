@@ -60,7 +60,7 @@ Jika belum terinstal, silakan instal sesuai dengan keterangan dalam [Program Req
 ### 2. Menjalankan Program Menggunakan File Eksekusi (`QuadtreeCompression.exe`)
 #### Langkah-langkah:
 1. Pastikan Anda berada di direktori proyek.
-2. Buka folder `bin` dan cari file `QuadtreeCompression.exe`.
+2. Buka root directory dan temukan QuadtreeCompression.exe.
 3. Jalankan file eksekusi dengan mengklik dua kali (jika menggunakan GUI) atau melalui terminal:
    ```sh
    cd bin
