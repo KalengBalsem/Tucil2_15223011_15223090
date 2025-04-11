@@ -58,9 +58,15 @@ class InputHandler
                 pixelMatrix[y, x, 0] = pixelBytes[arrayIndex + 2];  // B
             }
         }
-
+        
         return pixelMatrix;
     }
+    public static byte[,,] GetOriginalMatrix(byte[,,] pixelMatrix)
+    {
+        return (byte[,,])pixelMatrix.Clone(); // clone for ssim method in Metrics.cs
+    }
+    
+
 
     // user-input handler
     public string GetImagePath()
