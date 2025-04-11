@@ -155,31 +155,19 @@ class SSIM // Structural Similarity Index
 {
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
-        // Validate input dimensions to prevent out-of-bounds errors
-        if (y < 0 || x < 0 || y + height > pixelMatrix.GetLength(0) || x + width > pixelMatrix.GetLength(1))
-        {
-            throw new ArgumentException("Block coordinates or dimensions are out of bounds for the pixel matrix.");
-        }
-
-        // Constants for SSIM (Wang et al., 2004)
-        double L = 255; // Dynamic range for 8-bit images
+        // Menghitung C1-C2 berdasarkan rumus dari SSIM (Wang et al., 2004) dengan nilai piksel 255 untuk 8-bit gambar
+        double L = 255; // 8-bit 
         double K1 = 0.01;
         double K2 = 0.03;
-        double C1 = K1 * L * K1 * L; // C1 = (K1*L)^2 = 6.5025
-        double C2 = K2 * L * K2 * L; // C2 = (K2*L)^2 = 58.5225
-
-        // Get the original matrix (assumed to be a copy of the input image)
+        double C1 = K1*L*K1*L; // C1 = (K1*L)^2 = 6.5025
+        double C2 = K2*L*K2*L; // C2 = (K2*L)^2 = 58.5225
+        
         byte[,,] originalMatrix = InputHandler.GetOriginalMatrix(pixelMatrix);
-        if (originalMatrix.GetLength(0) != pixelMatrix.GetLength(0) || 
-            originalMatrix.GetLength(1) != pixelMatrix.GetLength(1))
-        {
-            throw new InvalidOperationException("Original matrix dimensions do not match pixel matrix dimensions.");
-        }
 
-        // Compute the mean of the original block (muX) for each channel
         double muX_R = 0, muX_G = 0, muX_B = 0;
         int numPixels = height * width;
 
+    //hitung mean dari gambar blok asli
         for (int i = y; i < y + height; i++)
         {
             for (int j = x; j < x + width; j++)
@@ -194,13 +182,12 @@ class SSIM // Structural Similarity Index
         muX_G /= numPixels;
         muX_B /= numPixels;
 
-        // Simulate the reconstructed block: all pixels are set to the mean color
-        // Therefore, muY (mean of reconstructed block) is the same as muX
+        // Tidak ada Blok Hasil Rekonstruksi, Simulasi Blok Rekosntruksi ketika sedang dalam proses kompresi
         double muY_R = muX_R;
         double muY_G = muX_G;
         double muY_B = muX_B;
 
-        // Compute variances and covariances
+        //VARIANCE AND COVARIANCE
         double varX_R = 0, varX_G = 0, varX_B = 0;
         double varY_R = 0, varY_G = 0, varY_B = 0;
         double covXY_R = 0, covXY_G = 0, covXY_B = 0;
@@ -209,39 +196,22 @@ class SSIM // Structural Similarity Index
         {
             for (int j = x; j < x + width; j++)
             {
-                // Deviations for the original block
-                double oxR = originalMatrix[i, j, 0] - muX_R;
-                double oxG = originalMatrix[i, j, 1] - muX_G;
-                double oxB = originalMatrix[i, j, 2] - muX_B;
+                double oxR = pixelMatrix[i, j, 0] - muX_R;
+                double oxG = pixelMatrix[i, j, 1] - muX_G;
+                double oxB = pixelMatrix[i, j, 2] - muX_B;
 
-                // Deviations for the reconstructed block (all pixels are muY, so deviation is 0)
-                double oyR = 0; // muY_R - muY_R = 0
-                double oyG = 0;
-                double oyB = 0;
-
-                // Variance of original block (population variance, divide by numPixels)
+                // blok rekonstruksi konstan, deviasi = 0, maka varY = 0, dan covXY = 0
                 varX_R += oxR * oxR;
                 varX_G += oxG * oxG;
                 varX_B += oxB * oxB;
-
-                // Variance of reconstructed block (all pixels are the same, so variance = 0)
-                varY_R = 0;
-                varY_G = 0;
-                varY_B = 0;
-
-                // Covariance (since oyR, oyG, oyB are 0, covariance is 0)
-                covXY_R += oxR * oyR;
-                covXY_G += oxG * oyG;
-                covXY_B += oxB * oyB;
             }
-        }
+        }  
 
-        // Normalize variances (use population variance, divide by numPixels)
-        varX_R /= numPixels;
-        varX_G /= numPixels;
-        varX_B /= numPixels;
+        varX_R /= (numPixels - 1); 
+        varX_G /= (numPixels - 1);
+        varX_B /= (numPixels - 1);
 
-        // varY and covXY are already 0 due to the reconstructed block being constant
+
         varY_R = 0;
         varY_G = 0;
         varY_B = 0;
@@ -249,27 +219,25 @@ class SSIM // Structural Similarity Index
         covXY_G = 0;
         covXY_B = 0;
 
-        // Compute SSIM for each channel
-        double ssim_R = ((2 * muX_R * muY_R + C1) * (2 * covXY_R + C2)) /
-                        ((muX_R * muX_R + muY_R * muY_R + C1) * (varX_R + varY_R + C2));
+        // Hitung SSIM per Kanal warna
+        double numerator_R = ((2 * muX_R * muY_R + C1) * (2 * covXY_R + C2));
+        double denomerator_R = ((muX_R * muX_R + muY_R * muY_R + C1) * (varX_R + varY_R + C2));
+        double ssim_R = numerator_R / denomerator_R;
 
-        double ssim_G = ((2 * muX_G * muY_G + C1) * (2 * covXY_G + C2)) /
-                        ((muX_G * muX_G + muY_G * muY_G + C1) * (varX_G + varY_G + C2));
+        double numerator_G = ((2 * muX_G * muY_G + C1) * (2 * covXY_G + C2));
+        double denomerator_G = ((muX_G * muX_G + muY_G * muY_G + C1) * (varX_G + varY_G + C2));
+        double ssim_G = numerator_G / denomerator_G;
 
-        double ssim_B = ((2 * muX_B * muY_B + C1) * (2 * covXY_B + C2)) /
-                        ((muX_B * muX_B + muY_B * muY_B + C1) * (varX_B + varY_B + C2));
+        double numerator_B = ((2 * muX_B * muY_B + C1) * (2 * covXY_B + C2));
+        double denomerator_B = ((muX_B * muX_B + muY_B * muY_B) * (varX_B + varY_B + C2));
+        double ssim_B = numerator_B / denomerator_B;
 
-        // Average SSIM across channels
-        double averageSSIM = (ssim_R + ssim_G + ssim_B) / 3.0;
+        // SSIM VALUE
+        ssim_R /= numPixels;
+        ssim_G /= numPixels;
+        ssim_B /= numPixels;
 
-        // Compute error as 1 - SSIM to align with "split if error >= threshold"
-        double error = 1.0 - averageSSIM;
-
-        // Ensure error is within [0, 1] (though it should already be due to SSIM being in [-1, 1])
-        if (error < 0) error = 0;
-        if (error > 1) error = 1;
-
-        return error;
+        return (1.0 - ssim_R) + (1.0 - ssim_G) + (1.0 - ssim_B);
     }
 }
 
