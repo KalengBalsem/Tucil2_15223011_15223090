@@ -157,4 +157,5 @@ class Entropy
 
 class SSIM  // Structural Similarity Index
 {
+    // SSIM
 }
