@@ -4,7 +4,6 @@ namespace QuadtreeCompression;
 
 class Quadtree
 {
-    // ATTRIBUTES
     string errorMethod;
     double treshold;
     int minimumBlockSize;
@@ -172,25 +171,6 @@ class Quadtree
             }
         }
         return count;
-    }
-
-    // print tree for debugging
-    public void PrintTree()
-    {
-        PrintNode(rootNode, 0);
-    }
-
-    private void PrintNode(Node node, int depth)
-    {
-        string indent = new string(' ', depth * 2);
-        Console.WriteLine($"{indent}Node at ({node.X}, {node.Y}), size {node.nodeWidth}x{node.nodeHeight}, color {node.nodeAverageColor:X6}, leaf: {node.IsLeaf()}");
-        if(!node.IsLeaf())
-        {
-            foreach (Node child in node.childNodes)
-            {
-                PrintNode(child, depth+1);
-            }
-        }
     }
 
     // helper method
