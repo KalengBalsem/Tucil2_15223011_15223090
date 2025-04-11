@@ -33,7 +33,7 @@ class Quadtree
 
         double error = Variance.CalculateError(pixelMatrix, Y, X, nodeHeight, nodeWidth);
 
-        if (error >= treshold && (nodeWidth / 2) >= minimumBlockSize && (nodeHeight / 2) >= minimumBlockSize)
+        if (error >= treshold && (nodeHeight * nodeWidth / 4) >= minimumBlockSize)
         {
             SplitNode(node, pixelMatrix, depth + 1);
         }
@@ -103,26 +103,54 @@ class Quadtree
         return rootNode;
     }
 
-    // for debugging:
-    public int GetLeafCount()
+    public int GetMaxDepth()
     {
-        return CountLeaves(rootNode);
+        return CalculateMaxDepth(rootNode, 0);
     }
 
-    private int CountLeaves(Node node)
+    private int CalculateMaxDepth(Node node, int currentDepth)
     {
-        if (node.IsLeaf())
+        if (node == null || node.IsLeaf()) return currentDepth;
+
+        int maxChildDepth = currentDepth;
+        if (!node.IsLeaf())
         {
-            return 1;
+            foreach (Node child in node.childNodes)
+            {
+                if (child != null)
+                {
+                    int childDepth = CalculateMaxDepth(child, currentDepth + 1);
+                    maxChildDepth = Math.Max(maxChildDepth, childDepth);
+                }
+            }
         }
-        int count = 0;
-        foreach (Node child in node.childNodes)
+        return maxChildDepth;
+    }
+
+    public int GetNodeCount()
+    {
+        return CountNodes(rootNode);
+    }
+
+    private int CountNodes(Node node)
+    {
+        if (node == null) return 0;
+
+        int count = 1;
+        if (!node.IsLeaf())
         {
-            count += CountLeaves(child);
+            foreach (Node child in node.childNodes)
+            {
+                if (child != null)
+                {
+                    count += CountNodes(child);
+                }
+            }
         }
         return count;
     }
 
+    // print tree for debugging
     public void PrintTree()
     {
         PrintNode(rootNode, 0);
