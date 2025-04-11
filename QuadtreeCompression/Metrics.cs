@@ -176,6 +176,7 @@ class SSIM  : errorMethod // Structural Similarity Index
 
             double muX_R = 0, muX_G = 0, muX_B = 0;
             int numPixels = height * width;
+            byte[,,] originalMatrix = InputHandler.GetOriginalMatrix(pixelMatrix);
 
             //hitung mean dari gambar blok asli
             for (int i = y; i < y + height; i++)
