@@ -210,3 +210,24 @@ Program kemudian akan memproses gambar, membangun Quadtree, dan menghasilkan out
 - **Performa**:
   - Waktu eksekusi sangat bergantung pada ukuran gambar, metode IQA yang dipilih, dan parameter seperti ambang batas galat dan ukuran blok minimum.
   - Untuk gambar besar (misalnya, 4096x4096 piksel), disarankan menggunakan ambang batas galat yang lebih besar untuk mengurangi waktu pemrosesan.
+
+
+## Referensi
+
+- **C# Documentation**: Dokumentasi resmi C#.  
+  [https://learn.microsoft.com/en-us/dotnet/csharp/](https://learn.microsoft.com/en-us/dotnet/csharp/)
+
+- **.NET 9.0 Documentation**: Dokumentasi resmi .NET 9.0.  
+  [https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-9](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-9)
+
+- **System.Drawing.Common Documentation**: Dokumentasi package `System.Drawing.Common`.  
+  [https://learn.microsoft.com/en-us/dotnet/api/system.drawing.common](https://learn.microsoft.com/en-us/dotnet/api/system.drawing.common)
+
+- **Magick.NET Documentation**: Dokumentasi `Magick.NET-Q16-AnyCPU`.  
+  [https://github.com/dlemstra/Magick.NET](https://github.com/dlemstra/Magick.NET)
+
+- **NuGet Package Explorer**: Sumber package NuGet.  
+  - `System.Drawing.Common`: [https://www.nuget.org/packages/System.Drawing.Common/](https://www.nuget.org/packages/System.Drawing.Common/)  
+  - `Magick.NET-Q16-AnyCPU`: [https://www.nuget.org/packages/Magick.NET-Q16-AnyCPU/](https://www.nuget.org/packages/Magick.NET-Q16-AnyCPU/)
+
+--- 
