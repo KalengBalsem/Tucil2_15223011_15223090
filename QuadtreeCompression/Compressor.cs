@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace QuadtreeCompression;
 internal class Compressor
@@ -37,7 +39,7 @@ internal class Compressor
 
         // Time "Building Quadtree"
         outputHandler.StartTiming("Building Quadtree");
-        Quadtree quadtree = new Quadtree(pixelMatrix, errorMethod, threshold, minBlockSize, compressionPercentage);
+        Quadtree quadtree = new Quadtree(pixelMatrix, errorMethod, threshold, minBlockSize);
         outputHandler.StopTiming("Building Quadtree");
 
         outputHandler.SetQuadtreeStats(quadtree.GetMaxDepth(), quadtree.GetNodeCount());
@@ -62,4 +64,5 @@ internal class Compressor
         long compressedSize = new FileInfo(outputImagePath).Length;
         outputHandler.SetImageSizes(originalSize, compressedSize);
     }
+
 }

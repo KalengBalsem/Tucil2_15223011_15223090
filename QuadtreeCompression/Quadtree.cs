@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 namespace QuadtreeCompression;
 
 class Quadtree
@@ -7,15 +8,13 @@ class Quadtree
     string errorMethod;
     double treshold;
     int minimumBlockSize;
-    double compressionPercentage;
     Node rootNode;
 
-    public Quadtree(byte[,,] pixelMatrix, string errorMethod, double treshold, int minimumBlockSize, double compressionPercentage)
+    public Quadtree(byte[,,] pixelMatrix, string errorMethod, double treshold, int minimumBlockSize)
     {
         this.errorMethod = errorMethod;
         this.treshold = treshold;
         this.minimumBlockSize = minimumBlockSize;
-        this.compressionPercentage = compressionPercentage;
 
         rootNode = BuildQuadtree(pixelMatrix, 0, 0, pixelMatrix.GetLength(0), pixelMatrix.GetLength(1), 0);
         rootNode.SetNodeAverageColor(pixelMatrix);
@@ -31,7 +30,7 @@ class Quadtree
             return node;
         }
 
-        double error = Variance.CalculateError(pixelMatrix, Y, X, nodeHeight, nodeWidth);
+        double error = CalculateError(errorMethod, pixelMatrix, Y, X, nodeHeight, nodeWidth);
 
         if (error >= treshold && (nodeHeight * nodeWidth / 4) >= minimumBlockSize)
         {
@@ -150,6 +149,31 @@ class Quadtree
         return count;
     }
 
+    public int GetLeafNodeCount()
+        {
+            return CountLeafNodes(rootNode);
+        }
+
+    private int CountLeafNodes(Node node)
+    {
+        if (node.IsLeaf())
+        {
+            return 1;
+        }
+        int count = 0;
+        if (!node.IsLeaf())
+        {
+            foreach (var child in node.childNodes)
+            {
+                if (child != null)
+                {
+                    count += CountLeafNodes(child);
+                }
+            }
+        }
+        return count;
+    }
+
     // print tree for debugging
     public void PrintTree()
     {
@@ -166,6 +190,21 @@ class Quadtree
             {
                 PrintNode(child, depth+1);
             }
+        }
+    }
+
+    // helper method
+    private double CalculateError(string errorMethod, byte[,,] pixelMatrix, int y, int x, int height, int width)
+    {
+        switch (errorMethod)
+        {
+            case "Variance": return Variance.CalculateError(pixelMatrix, y, x, height, width);
+            case "MAD": return MeanAbsoluteDeviation.CalculateError(pixelMatrix, y, x, height, width);
+            case "MPD": return MaxPixelDifference.CalculateError(pixelMatrix, y, x, height, width);
+            case "Entropy": return Entropy.CalculateError(pixelMatrix, y, x, height, width);
+            case "SSIM": return 0.0;
+            default:
+                return Variance.CalculateError(pixelMatrix, y, x, height, width);
         }
     }
 }

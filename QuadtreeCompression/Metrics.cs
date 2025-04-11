@@ -41,7 +41,7 @@ class Variance
     }
 }
 
-class MAD  // Mean Absolute Deviation
+class MeanAbsoluteDeviation
 {
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
@@ -119,9 +119,9 @@ class Entropy
     {
         
         int numPixels = height * width;
-        int histogramR = new int[256];
-        int histogramG = new int[256];
-        int histogramB = new int[256];
+        int[] histogramR = new int[256];
+        int[] histogramG = new int[256];
+        int[] histogramB = new int[256];
 
 
         for (int i = y; i < y + height; i++)
