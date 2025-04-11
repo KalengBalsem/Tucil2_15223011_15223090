@@ -16,7 +16,9 @@ class OutputHandler
         public double CompressionPercentage => PreviousImageSizeBytes > 0 ? (1.0 - (double)CompressedImageSizeBytes / PreviousImageSizeBytes) * 100 : 0;
         public int QuadtreeTotalDepth { get; set; }
         public int NodeCount { get; set; }
-
+        public string? OutputImagePath { get; set; }
+        public string? OutputGifPath { get; set; }
+        
         public override string ToString()
         {
             string result = "\n---------- Program Statistics ----------\n";
@@ -32,6 +34,11 @@ class OutputHandler
             result += $"- Compression Percentage: {CompressionPercentage:F2}%\n";
             result += $"- Quadtree Total Depth: {QuadtreeTotalDepth}\n";
             result += $"- Node Count: {NodeCount}\n";
+            result += $"- Output Image Path: {OutputImagePath}\n"; // Always display image path
+            if (!string.IsNullOrEmpty(OutputGifPath)) // Display GIF path only if provided
+            {
+                result += $"- Output GIF Path: {OutputGifPath}\n";
+            }
             return result;
         }
     }
@@ -68,7 +75,11 @@ class OutputHandler
         stats.QuadtreeTotalDepth = depth;
         stats.NodeCount = nodeCount;
     }
-
+    public void SetOutputPaths(string outputImagePath, string? outputGifPath = null)
+    {
+        stats.OutputImagePath = outputImagePath;
+        stats.OutputGifPath = outputGifPath; // Will be null if GIF is not created
+    }
     public void DisplayStatistics()
     {
         Console.WriteLine(stats.ToString());

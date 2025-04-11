@@ -35,6 +35,7 @@ namespace QuadtreeCompression
                     createGif);
 
                 //Display statistics
+                outputHandler.SetOutputPaths(outputImagePath, createGif ? outputGifPath : null);
                 outputHandler.DisplayStatistics();
         }
     }
