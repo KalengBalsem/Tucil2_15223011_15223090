@@ -164,9 +164,8 @@ class Entropy : errorMethod
 
 class SSIM  : errorMethod // Structural Similarity Index
 {
-    class SSIM  : errorMethod // Structural Similarity Index
-    {
-        public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
+    
+        public static double CalculateError(byte[,,] pixelMatrix, byte[,,] originalMatrix, int y, int x, int height, int width)
         {
             // Menghitung C1-C2 berdasarkan rumus dari SSIM (Wang et al., 2004) dengan nilai piksel 255 untuk 8-bit gambar
             double L = 255; // 8-bit 
@@ -250,7 +249,6 @@ class SSIM  : errorMethod // Structural Similarity Index
 
             return (1.0 - ssim_R) + (1.0 - ssim_G) + (1.0 - ssim_B);
         }
-    }
 }
 
 
