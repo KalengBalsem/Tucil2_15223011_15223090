@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using ImageMagick;
@@ -7,6 +8,69 @@ namespace QuadtreeCompression;
 
 class OutputHandler
 {
+    public class ProgramStatistics
+    {
+        public Dictionary<string, TimeSpan> ExecutionTimes { get; } = new Dictionary<string, TimeSpan>();
+        public long PreviousImageSizeBytes { get; set; }
+        public long CompressedImageSizeBytes { get; set;}
+        public double CompressionPercentage => PreviousImageSizeBytes > 0 ? (1.0 - (double)CompressedImageSizeBytes / PreviousImageSizeBytes) * 100 : 0;
+        public int QuadtreeTotalDepth { get; set; }
+        public int NodeCount { get; set; }
+
+        public override string ToString()
+        {
+            string result = "\n---------- Program Statistics ----------\n";
+            foreach (var kvp in ExecutionTimes)
+            {
+                result += $"- {kvp.Key}: {kvp.Value.TotalMilliseconds:F2} ms\n";
+            }
+            result += $"- Previous Image Size: {PreviousImageSizeBytes / 1024.0:F3} KB\n";
+            result += $"- Compressed Image Size: {CompressedImageSizeBytes / 1024.0:F3} KB\n";
+            result += $"- Compression Percentage: {CompressionPercentage:F2}%\n";
+            result += $"- Quadtree Total Depth: {QuadtreeTotalDepth}\n";
+            result += $"- Node Count: {NodeCount}\n";
+            return result;
+        }
+    }
+
+    private readonly ProgramStatistics stats = new ProgramStatistics();
+    private readonly Dictionary<string, Stopwatch> timers = new Dictionary<string, Stopwatch>();
+
+    public void StartTiming(string processName)
+    {
+        if (!timers.ContainsKey(processName))
+        {
+            timers[processName] = new Stopwatch(); 
+        }
+        timers[processName].Restart();
+    }
+
+    public void StopTiming(string processName)
+    {
+        if (timers.ContainsKey(processName) && timers[processName].IsRunning)
+        {
+            timers[processName].Stop();
+            stats.ExecutionTimes[processName] = timers[processName].Elapsed;
+        }
+    }
+
+    public void SetImageSizes(long previousSize, long compressedSize)
+    {
+        stats.PreviousImageSizeBytes = previousSize;
+        stats.CompressedImageSizeBytes = compressedSize;
+    }
+
+    public void SetQuadtreeStats(int depth, int nodeCount)
+    {
+        stats.QuadtreeTotalDepth = depth;
+        stats.NodeCount = nodeCount;
+    }
+
+    public void DisplayStatistics()
+    {
+        Console.WriteLine(stats.ToString());
+    }
+
     // Image output
     public void SaveImage(byte[,,] pixelMatrix, int height, int width, string inputImagePath, string outputImagePath)
     {
@@ -76,7 +140,7 @@ class OutputHandler
 
     // GIF output
     // Use Magick.NET to create the animated GIF
-    public void CreateTransformationGif(Quadtree quadtree, byte[,,] pixelMatrix, int width, int height, string outputGifPath)
+    public void CreateTransformationGif(Quadtree quadtree, byte[,,] pixelMatrix, int height, int width, string outputGifPath)
     {
         int maxDepth = GetMaxDepth(quadtree);
 
@@ -151,7 +215,7 @@ class OutputHandler
     // Helper method to reconstruct the image up to a specific depth (should've been joined to image reconstruction in QuadTree.cs)
     private void ReconstructImageAtDepth(Node node, byte[,,] pixelMatrix, int maxDepth, int currentDepth = 0)
     {
-        if (currentDepth > maxDepth || node.IsLeaf())
+        if (currentDepth >= maxDepth || node.IsLeaf())
         {
             // Fill the region with the node's average color
             int r = (node.nodeAverageColor >> 16) & 0xFF;
