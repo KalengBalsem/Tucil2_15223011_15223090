@@ -6,11 +6,7 @@ namespace QuadtreeCompression;
 
 class InputHandler
 {
-    public static void IsValidImageInput() 
-    {
-        Console.WriteLine("this is where the image validity is checked");
-    }
-
+    // image data extraction
     public static byte[,,] ImageToPixelBytes(string imgPath) 
     {
         try
@@ -64,5 +60,130 @@ class InputHandler
         }
 
         return pixelMatrix;
+    }
+
+    // user-input handler
+    public string GetImagePath()
+    {
+        while (true)
+        {
+            Console.Write("Absolute input image path: ");
+            string? path = Console.ReadLine()?.Trim();
+            if(!string.IsNullOrEmpty(path) && File.Exists(path))
+            {
+                return path;
+            }
+            Console.WriteLine("Invalid path or file does not exist. Please try again.");
+        }
+    }
+
+    public string GetErrorMethod()
+    {
+        while (true)
+        {
+            Console.Write("Select error calculation method (1/2/3/4/5): ");
+            string? input = Console.ReadLine()?.Trim();
+            switch (input)
+            {
+                case "1": return "Variance";
+                case "2": return "MAD";
+                case "3": return "MPD";
+                case "4": return "Entropy";
+                case "5": return "SSIM";      
+            }
+            Console.WriteLine("Invalid choice. Please enter a number between 1-5.");
+        }
+    }
+
+    public double GetThreshold(string method)
+    {
+        double min, max;
+        switch (method)
+        {
+            case "Variance":
+                min = 0;
+                max = 16000;
+                break;
+            case "MAD":
+                min = 0;
+                max = 50;
+                break;
+            case "MPD":
+                min = 0;
+                max = 100;
+                break;
+            case "Entropy":
+                min = 0;
+                max = 7;
+                break;
+            case "SSIM":
+                min = 0;
+                max = 0.5; // Using 1 - SSIM as the error metric
+                break;
+            default:
+                throw new ArgumentException("Invalid error method");
+        }
+
+        while (true)
+        {
+            Console.Write($"Enter threshold value ({min} to {max}): ");
+            if (double.TryParse(Console.ReadLine(), out double threshold) && threshold >= min && threshold <= max)
+            {
+                return threshold;
+            }
+            Console.WriteLine($"Invalid threshold. Please enter a value between {min} and {max}.");
+        }
+    }
+
+    public int GetMinBlockSize()
+    {
+        while (true)
+        {
+            Console.Write("Enter minimum block size (block area. e.g. 2, 4, 10 etc): ");
+            if (int.TryParse(Console.ReadLine(), out int size)  && size > 0)
+            {
+                return size;
+            }
+            Console.WriteLine("Invalid block size. Please enter a positive integer.");
+        }
+    }
+
+    public double GetCompressionPercentage()
+    {
+        while (true)
+        {
+            Console.Write("Enter target compression percentage (0.00 to 1.0): ");
+            if (double.TryParse(Console.ReadLine(), out double percent) && percent <= 1)
+            {
+                return percent;
+            }
+            Console.WriteLine("Invalid percentage. Please enter a value between 0.00 and 1.00");
+        }
+    }
+
+    public string GetOutputImagePath(string inputImagePath)
+    {
+        while (true) {
+            Console.Write("Absolute output image path: ");
+            string? outputPath = Console.ReadLine()?.Trim();
+            if(!string.IsNullOrEmpty(outputPath))
+            {
+                return outputPath;
+            }
+            Console.WriteLine("Invalid path. Please try again.");
+        }
+    }
+
+    public string GetOutputGifPath(string inputImagePath)
+    {
+        while (true) {
+            Console.Write("Absolute GIF path: ");
+            string? outputPath = Console.ReadLine()?.Trim();
+            if(!string.IsNullOrEmpty(outputPath))
+            {
+                return outputPath;
+            }
+            Console.WriteLine("Invalid path. Please try again.");
+        }
     }
 }
