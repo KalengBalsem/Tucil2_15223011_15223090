@@ -105,12 +105,54 @@ class MaxPixelDifference
         int differenceG = (int)(maxG - minG);
         int differenceB = (int)(maxB - minB);
         
+        differenceR /= numPixels;
+        differenceG /= numPixels;
+        differenceB /= numPixels;
+
         return differenceR + differenceG + differenceB;
     }
 }
 
 class Entropy
 {
+    public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
+    {
+        
+        int numPixels = height * width;
+        int histogramR = new int[256];
+        int histogramG = new int[256];
+        int histogramB = new int[256];
+
+
+        for (int i = y; i < y + height; i++)
+        {
+            for (int j = x; j < x + width; j++)
+            { 
+                histogramR[pixelMatrix[i, j, 0]]++; 
+                histogramG[pixelMatrix[i, j, 1]]++; 
+                histogramB[pixelMatrix[i, j, 2]]++; 
+            }
+        }
+
+        double entropyR = 0, entropyG = 0, entropyB = 0;
+
+        for (int i = 0; i < 256; i++)
+        {
+            double probabilityR = (double)histogramR[i] / numPixels;
+            double probabilityG = (double)histogramG[i] / numPixels;
+            double probabilityB = (double)histogramB[i] / numPixels;
+
+            if (probabilityR > 0) entropyR -= probabilityR * Math.Log(probabilityR, 2);
+            if (probabilityG > 0) entropyG -= probabilityG * Math.Log(probabilityG, 2);
+            if (probabilityB > 0) entropyB -= probabilityB * Math.Log(probabilityB, 2);
+        }
+        entropyR /= numPixels;
+        entropyG /= numPixels;
+        entropyB /= numPixels;
+
+        return entropyR + entropyG + entropyB;
+    }
+
 }
 
 class SSIM  // Structural Similarity Index
