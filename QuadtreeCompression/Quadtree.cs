@@ -182,7 +182,7 @@ class Quadtree
             case "MAD": return MeanAbsoluteDeviation.CalculateError(pixelMatrix, y, x, height, width);
             case "MPD": return MaxPixelDifference.CalculateError(pixelMatrix, y, x, height, width);
             case "Entropy": return Entropy.CalculateError(pixelMatrix, y, x, height, width);
-            case "SSIM": return 0.0;
+            case "SSIM": return SSIM.CalculateError(pixelMatrix, y, x, height, width);  
             default:
                 return Variance.CalculateError(pixelMatrix, y, x, height, width);
         }
