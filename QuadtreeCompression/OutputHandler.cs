@@ -20,10 +20,13 @@ class OutputHandler
         public override string ToString()
         {
             string result = "\n---------- Program Statistics ----------\n";
+            result += "- Execution Time\n";
             foreach (var kvp in ExecutionTimes)
             {
-                result += $"- {kvp.Key}: {kvp.Value.TotalMilliseconds:F2} ms\n";
+                result += $"  - {kvp.Key}: {kvp.Value.TotalMilliseconds:F2} ms\n";
             }
+            result += "\n";
+
             result += $"- Previous Image Size: {PreviousImageSizeBytes / 1024.0:F3} KB\n";
             result += $"- Compressed Image Size: {CompressedImageSizeBytes / 1024.0:F3} KB\n";
             result += $"- Compression Percentage: {CompressionPercentage:F2}%\n";
@@ -72,7 +75,13 @@ class OutputHandler
     }
 
     // Image output
-    public void SaveImage(byte[,,] pixelMatrix, int height, int width, string inputImagePath, string outputImagePath)
+    public void SaveImage(
+        byte[,,] pixelMatrix,
+        int height,
+        int width,
+        string inputImagePath,
+        string outputImagePath,
+        long jpegQuality = 75L) // Default quality, overridden for JPEG outputs
     {
         if (pixelMatrix == null)
             throw new ArgumentNullException(nameof(pixelMatrix));
@@ -95,35 +104,18 @@ class OutputHandler
                 }
             }
 
-            var extension = Path.GetExtension(inputImagePath)?.ToLowerInvariant();
-            ImageFormat format;
-            switch (extension)
+            string inputExtension = Path.GetExtension(inputImagePath).ToLowerInvariant();
+            if (inputExtension == ".png")
             {
-                case ".jpg":
-                case ".jpeg":
-                    format = ImageFormat.Jpeg;
-                    outputImagePath = Path.ChangeExtension(outputImagePath, ".jpg");
-                    break;
-                case ".png":
-                    format = ImageFormat.Png;
-                    outputImagePath = Path.ChangeExtension(outputImagePath, ".png");
-                    break;
-                default:
-                    format = ImageFormat.Png;
-                    outputImagePath = Path.ChangeExtension(outputImagePath, ".png");
-                    break;
+                reconstructedBitmap.Save(outputImagePath, ImageFormat.Png);
             }
-
-            if (format.Equals(ImageFormat.Jpeg))
+            else // JPEG
             {
                 var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                 var encoderParams = new EncoderParameters(1);
-                encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, 75L);
+                encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, jpegQuality);
+                outputImagePath = Path.ChangeExtension(outputImagePath, ".jpg");
                 reconstructedBitmap.Save(outputImagePath, jpgEncoder, encoderParams);
-            }
-            else
-            {
-                reconstructedBitmap.Save(outputImagePath, format);
             }
         }
     }
@@ -133,7 +125,7 @@ class OutputHandler
         foreach (var codec in ImageCodecInfo.GetImageEncoders())
         {
             if (codec.FormatID == format.Guid)
-            return codec;
+                return codec;
         }
         throw new InvalidOperationException($"No encoder found for format {format}.");
     }

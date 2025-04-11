@@ -16,7 +16,6 @@ namespace QuadtreeCompression
                 string errorMethod = inputHandler.GetErrorMethod();
                 double threshold = inputHandler.GetThreshold(errorMethod);
                 int minBlockSize = inputHandler.GetMinBlockSize();
-                double compressionPercentage = inputHandler.GetCompressionPercentage();
                 string outputImagePath = inputHandler.GetOutputImagePath(inputImagePath);
                 string outputGifPath = inputHandler.GetOutputGifPath(inputImagePath);
 
@@ -31,7 +30,6 @@ namespace QuadtreeCompression
                     errorMethod,
                     threshold,
                     minBlockSize,
-                    compressionPercentage,
                     outputImagePath,
                     outputGifPath,
                     createGif);
