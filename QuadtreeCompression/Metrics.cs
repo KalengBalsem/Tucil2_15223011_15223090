@@ -8,7 +8,7 @@ class Variance
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
         double sumR = 0, sumG = 0, sumB = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
         for (int i = y; i < y + height; i++)
         {
@@ -20,9 +20,9 @@ class Variance
             }
         }
 
-        int avgR = (int)(sumR / numPixels);
-        int avgG = (int)(sumG / numPixels);
-        int avgB = (int)(sumB / numPixels);
+        double avgR = (sumR / numPixels);
+        double avgG = (sumG / numPixels);
+        double avgB = (sumB / numPixels);
 
         double varR = 0, varG = 0, varB = 0;
         for (int i = y; i < y + height; i++)
@@ -34,10 +34,10 @@ class Variance
                 varB += Math.Pow(pixelMatrix[i, j, 2] - avgB, 2);
             }
         }
-        varR /= numPixels;
-        varG /= numPixels;
-        varB /= numPixels;
-        return varR + varG + varB;
+        // varR /= numPixels;
+        // varG /= numPixels;
+        // varB /= numPixels;
+        return (varR + varG + varB)/3;
     }
 }
 
@@ -46,7 +46,7 @@ class MeanAbsoluteDeviation
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
         double sumR = 0, sumG = 0, sumB = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
         for (int i = y; i < y + height; i++)
         {
@@ -58,9 +58,9 @@ class MeanAbsoluteDeviation
             }
         }
 
-        int avgR = (int)(sumR / numPixels);
-        int avgG = (int)(sumG / numPixels);
-        int avgB = (int)(sumB / numPixels);
+        double avgR = (sumR / numPixels);
+        double avgG = (sumG / numPixels);
+        double avgB = (sumB / numPixels);
 
         double madR = 0, madG = 0, madB = 0;
         for (int i = y; i < y + height; i++)
@@ -72,10 +72,10 @@ class MeanAbsoluteDeviation
                 madB += Math.Abs(pixelMatrix[i, j, 2] - avgB);
             }
         }
-        madR /= numPixels;
-        madG /= numPixels;
-        madB /= numPixels;
-        return madR + madG + madB;
+        // madR /= numPixels;
+        // madG /= numPixels;
+        // madB /= numPixels;
+        return (madR + madG + madB) / 3;
     }
 }
 
@@ -119,7 +119,8 @@ class Entropy
 {
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
-        int numPixels = height * width;
+        
+        double numPixels = height * width;
         int[] histogramR = new int[256];
         int[] histogramG = new int[256];
         int[] histogramB = new int[256];
@@ -147,7 +148,7 @@ class Entropy
             if (probabilityB > 0) entropyB -= probabilityB * Math.Log(probabilityB, 2);
         }
 
-        return entropyR + entropyG + entropyB;
+        return (entropyR + entropyG + entropyB) / 3;
     }
 }
 
@@ -165,7 +166,7 @@ class SSIM // Structural Similarity Index
         byte[,,] originalMatrix = InputHandler.GetOriginalMatrix(pixelMatrix);
 
         double muX_R = 0, muX_G = 0, muX_B = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
     //hitung mean dari gambar blok asli
         for (int i = y; i < y + height; i++)
