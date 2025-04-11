@@ -1,0 +1,2 @@
+C:\Users\balse\Documents\VScode\Tucil2_Stima master\Tucil2_Stima\QuadtreeCompression\bin\Release\net9.0\win-x64\publish\QuadtreeCompression.pdb
+C:\Users\balse\Documents\VScode\Tucil2_Stima master\Tucil2_Stima\QuadtreeCompression\bin\Release\net9.0\win-x64\publish\QuadtreeCompression.exe

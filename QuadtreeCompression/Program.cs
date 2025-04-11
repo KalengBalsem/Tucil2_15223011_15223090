@@ -6,12 +6,12 @@ namespace QuadtreeCompression
     {
         static void Main(string[] args)
         {
-                // Step 1: Initialize handlers
+                // Initialize handlers
                 InputHandler inputHandler = new InputHandler();
                 OutputHandler outputHandler = new OutputHandler();
                 Compressor compressor = new Compressor(outputHandler);
 
-                // Step 2: Gather inputs
+                // Gather inputs
                 string inputImagePath = inputHandler.GetImagePath();
                 string errorMethod = inputHandler.GetErrorMethod();
                 double threshold = inputHandler.GetThreshold(errorMethod);
@@ -35,6 +35,7 @@ namespace QuadtreeCompression
                     createGif);
 
                 //Display statistics
+                outputHandler.SetOutputPaths(outputImagePath, createGif ? outputGifPath : null);
                 outputHandler.DisplayStatistics();
         }
     }

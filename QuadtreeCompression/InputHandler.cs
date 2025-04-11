@@ -108,7 +108,7 @@ class InputHandler
         {
             case "Variance":
                 min = 0;
-                max = 16000;
+                max = 5000;
                 break;
             case "MAD":
                 min = 0;
@@ -124,7 +124,7 @@ class InputHandler
                 break;
             case "SSIM":
                 min = 0;
-                max = 0.5; // Using 1 - SSIM as the error metric
+                max = 0.5; 
                 break;
             default:
                 throw new ArgumentException("Invalid error method");
