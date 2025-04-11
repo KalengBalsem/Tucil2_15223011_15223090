@@ -8,7 +8,7 @@ class Variance
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
         double sumR = 0, sumG = 0, sumB = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
         for (int i = y; i < y + height; i++)
         {
@@ -20,9 +20,9 @@ class Variance
             }
         }
 
-        int avgR = (int)(sumR / numPixels);
-        int avgG = (int)(sumG / numPixels);
-        int avgB = (int)(sumB / numPixels);
+        double avgR = (sumR / numPixels);
+        double avgG = (sumG / numPixels);
+        double avgB = (sumB / numPixels);
 
         double varR = 0, varG = 0, varB = 0;
         for (int i = y; i < y + height; i++)
@@ -34,10 +34,10 @@ class Variance
                 varB += Math.Pow(pixelMatrix[i, j, 2] - avgB, 2);
             }
         }
-        varR /= numPixels;
-        varG /= numPixels;
-        varB /= numPixels;
-        return varR + varG + varB;
+        // varR /= numPixels;
+        // varG /= numPixels;
+        // varB /= numPixels;
+        return (varR + varG + varB)/3;
     }
 }
 
@@ -46,7 +46,7 @@ class MeanAbsoluteDeviation
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
         double sumR = 0, sumG = 0, sumB = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
         for (int i = y; i < y + height; i++)
         {
@@ -58,9 +58,9 @@ class MeanAbsoluteDeviation
             }
         }
 
-        int avgR = (int)(sumR / numPixels);
-        int avgG = (int)(sumG / numPixels);
-        int avgB = (int)(sumB / numPixels);
+        double avgR = (sumR / numPixels);
+        double avgG = (sumG / numPixels);
+        double avgB = (sumB / numPixels);
 
         double madR = 0, madG = 0, madB = 0;
         for (int i = y; i < y + height; i++)
@@ -72,10 +72,10 @@ class MeanAbsoluteDeviation
                 madB += Math.Abs(pixelMatrix[i, j, 2] - avgB);
             }
         }
-        madR /= numPixels;
-        madG /= numPixels;
-        madB /= numPixels;
-        return madR + madG + madB;
+        // madR /= numPixels;
+        // madG /= numPixels;
+        // madB /= numPixels;
+        return (madR + madG + madB) / 3;
     }
 }
 
@@ -85,7 +85,7 @@ class MaxPixelDifference
     {
         double minR = 0, minG = 0, minB = 0;
         double maxR = 0, maxG = 0, maxB = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
         for (int i = y; i < y + height; i++)
         {
@@ -101,15 +101,15 @@ class MaxPixelDifference
 
         }
         
-        int differenceR = (int)(maxR - minR);
-        int differenceG = (int)(maxG - minG);
-        int differenceB = (int)(maxB - minB);
+        double differenceR = (maxR - minR);
+        double differenceG = (maxG - minG);
+        double differenceB = (maxB - minB);
         
-        differenceR /= numPixels;
-        differenceG /= numPixels;
-        differenceB /= numPixels;
+        // differenceR /= numPixels;
+        // differenceG /= numPixels;
+        // differenceB /= numPixels;
 
-        return differenceR + differenceG + differenceB;
+        return (differenceR + differenceG + differenceB) / 3;
     }
 }
 
@@ -118,7 +118,7 @@ class Entropy
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
         
-        int numPixels = height * width;
+        double numPixels = height * width;
         int[] histogramR = new int[256];
         int[] histogramG = new int[256];
         int[] histogramB = new int[256];
@@ -146,11 +146,11 @@ class Entropy
             if (probabilityG > 0) entropyG -= probabilityG * Math.Log(probabilityG, 2);
             if (probabilityB > 0) entropyB -= probabilityB * Math.Log(probabilityB, 2);
         }
-        entropyR /= numPixels;
-        entropyG /= numPixels;
-        entropyB /= numPixels;
+        // entropyR /= numPixels;
+        // entropyG /= numPixels;
+        // entropyB /= numPixels;
 
-        return entropyR + entropyG + entropyB;
+        return (entropyR + entropyG + entropyB) / 3;
     }
 
 }
@@ -169,7 +169,7 @@ class SSIM // Structural Similarity Index
         byte[,,] originalMatrix = InputHandler.GetOriginalMatrix(pixelMatrix);
 
         double muX_R = 0, muX_G = 0, muX_B = 0;
-        int numPixels = height * width;
+        double numPixels = height * width;
 
     //hitung mean dari gambar blok asli
         for (int i = y; i < y + height; i++)
@@ -216,30 +216,23 @@ class SSIM // Structural Similarity Index
         varX_B /= (numPixels - 1);
 
 
-        varY_R = 0;
-        varY_G = 0;
-        varY_B = 0;
-        covXY_R = 0;
-        covXY_G = 0;
-        covXY_B = 0;
-
         // Hitung SSIM per Kanal warna
         double numerator_R = ((2 * muX_R * muY_R + C1) * (2 * covXY_R + C2));
-        double denomerator_R = ((muX_R * muX_R + muY_R * muY_R + C1) * (varX_R + varY_R + C2));
-        double ssim_R = numerator_R / denomerator_R;
+        double denominator_R = ((muX_R * muX_R + muY_R * muY_R + C1) * (varX_R + varY_R + C2));
+        double ssim_R = numerator_R / denominator_R;
 
         double numerator_G = ((2 * muX_G * muY_G + C1) * (2 * covXY_G + C2));
-        double denomerator_G = ((muX_G * muX_G + muY_G * muY_G + C1) * (varX_G + varY_G + C2));
-        double ssim_G = numerator_G / denomerator_G;
+        double denominator_G = ((muX_G * muX_G + muY_G * muY_G + C1) * (varX_G + varY_G + C2));
+        double ssim_G = numerator_G / denominator_G;
 
         double numerator_B = ((2 * muX_B * muY_B + C1) * (2 * covXY_B + C2));
-        double denomerator_B = ((muX_B * muX_B + muY_B * muY_B) * (varX_B + varY_B + C2));
-        double ssim_B = numerator_B / denomerator_B;
+        double denominator_B = ((muX_B * muX_B + muY_B * muY_B + C1) * (varX_B + varY_B + C2));
+        double ssim_B = numerator_B / denominator_B;
 
         // SSIM VALUE
-        ssim_R /= numPixels;
-        ssim_G /= numPixels;
-        ssim_B /= numPixels;
+        // ssim_R /= numPixels;
+        // ssim_G /= numPixels;
+        // ssim_B /= numPixels;
 
         return (1.0 - ssim_R) + (1.0 - ssim_G) + (1.0 - ssim_B);
     }
