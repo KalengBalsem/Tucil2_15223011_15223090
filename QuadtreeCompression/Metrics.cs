@@ -83,54 +83,54 @@ class MaxPixelDifference
 {
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
-        double minR = 0, minG = 0, minB = 0;
-        double maxR = 0, maxG = 0, maxB = 0;
-        int numPixels = height * width;
+        double minR = 255, minG = 255, minB = 255;
+        double maxR =   0, maxG =   0, maxB =   0;
 
         for (int i = y; i < y + height; i++)
         {
             for (int j = x; j < x + width; j++)
             {
-                minR = Math.Min(minR, pixelMatrix[i, j, 0]);
-                minG = Math.Min(minG, pixelMatrix[i, j, 1]);
-                minB = Math.Min(minB, pixelMatrix[i, j, 2]);
-                maxR = Math.Max(maxR, pixelMatrix[i, j, 0]);
-                maxG = Math.Max(maxG, pixelMatrix[i, j, 1]);
-                maxB = Math.Max(maxB, pixelMatrix[i, j, 2]);
+                byte r = pixelMatrix[i, j, 0];
+                byte g = pixelMatrix[i, j, 1];
+                byte b = pixelMatrix[i, j, 2];
+
+                if (r < minR) minR = r;
+                if (g < minG) minG = g;
+                if (b < minB) minB = b;
+
+                if (r > maxR) maxR = r;
+                if (g > maxG) maxG = g;
+                if (b > maxB) maxB = b;
             }
-
         }
-        
-        int differenceR = (int)(maxR - minR);
-        int differenceG = (int)(maxG - minG);
-        int differenceB = (int)(maxB - minB);
-        
-        differenceR /= numPixels;
-        differenceG /= numPixels;
-        differenceB /= numPixels;
 
-        return differenceR + differenceG + differenceB;
+        int diffR = (int)(maxR - minR);
+        int diffG = (int)(maxG - minG);
+        int diffB = (int)(maxB - minB);
+
+        // Pilih salah satu:
+        // return diffR + diffG + diffB;           // jumlah total
+        return (diffR + diffG + diffB) / 3.0;     // rata‑rata kanal
     }
 }
+
 
 class Entropy
 {
     public static double CalculateError(byte[,,] pixelMatrix, int y, int x, int height, int width)
     {
-        
         int numPixels = height * width;
         int[] histogramR = new int[256];
         int[] histogramG = new int[256];
         int[] histogramB = new int[256];
 
-
         for (int i = y; i < y + height; i++)
         {
             for (int j = x; j < x + width; j++)
-            { 
-                histogramR[pixelMatrix[i, j, 0]]++; 
-                histogramG[pixelMatrix[i, j, 1]]++; 
-                histogramB[pixelMatrix[i, j, 2]]++; 
+            {
+                histogramR[pixelMatrix[i, j, 0]]++;
+                histogramG[pixelMatrix[i, j, 1]]++;
+                histogramB[pixelMatrix[i, j, 2]]++;
             }
         }
 
@@ -146,13 +146,9 @@ class Entropy
             if (probabilityG > 0) entropyG -= probabilityG * Math.Log(probabilityG, 2);
             if (probabilityB > 0) entropyB -= probabilityB * Math.Log(probabilityB, 2);
         }
-        entropyR /= numPixels;
-        entropyG /= numPixels;
-        entropyB /= numPixels;
 
         return entropyR + entropyG + entropyB;
     }
-
 }
 
 class SSIM // Structural Similarity Index
