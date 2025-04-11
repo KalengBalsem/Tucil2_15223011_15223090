@@ -99,11 +99,8 @@ Saat program dijalankan (baik melalui `QuadtreeCompression.exe` atau `dotnet run
 
 1. **Nama file gambar input**:
    ```
-   Masukkan nama file gambar input (termasuk ekstensi, misalnya: ./test_input/image.png):
+   Masukkan path file gambar input absolut (termasuk ekstensi, misalnya: C:\Users\balse\Documents\VScode\Tucil2W\test\test1.jpg):
    ```
-   - File gambar harus berada di folder `test_input`.
-   - Format yang didukung: `.png`, `.jpg`.
-
 2. **Metric**:
    ```
    Pilih metric (1: Varians, 2: MAD, 3: MPD, 4: Entropi, 5: SSIM):
@@ -166,34 +163,40 @@ Program kemudian akan memproses gambar, membangun Quadtree, dan menghasilkan out
 
 2. **Masukkan input**:
    ```
-   Masukkan nama file gambar input (termasuk ekstensi, misalnya: ./test_input/image.png):
-   ./test_input/sample.png
-   Pilih metode IQA (1: Varians, 2: MAD, 3: MPD, 4: Entropi, 5: SSIM):
-   1
-   Masukkan ambang batas galat (contoh: 10.0):
-   15.0
-   Masukkan ukuran blok minimum (contoh: 4):
-   8
-   Apakah Anda ingin membuat GIF visualisasi? (ya/tidak):
-   ya
+   Absolute input image path: 
+   C:\Users\balse\Documents\VScode\Tucil2\test\test5.jpg
+   Select error calculation method (1/2/3/4/5):
+   5
+   Enter threshold value (0 to 0.5):
+   0.1
+   Enter minimum block size (block area. e.g. 2, 4, 10 etc):
+   20
+   Create quadtree-depth GIF? (y/N):
+   y
    ```
 
 3. **Hasil di terminal**:
    ```
-   Kompresi selesai!
-   Rasio kompresi: 68.45%
-   Waktu eksekusi: 980 ms
-   Jumlah simpul daun Quadtree: 896
-   GIF berhasil dibuat!
-   Waktu pembuatan GIF: 250 ms
-   Apakah Anda ingin menyimpan statistik kompresi ke file teks? (ya/tidak):
-   ya
+   ---------- Program Statistics ----------
+   - Execution Time
+      - Input Processing: 90.97 ms
+      - Building Quadtree: 4952.57 ms
+      - Image Reconstruction: 261.17 ms
+      - Save to GIF: 4226.33 ms
+
+   - Previous Image Size: 124.630 KB
+   - Compressed Image Size: 96.444 KB
+   - Compression Percentage: 22.62%
+   - Quadtree Total Depth: 7
+   - Node Count: 21845
+   - Output Image Path: C:\Users\balse\Documents\VScode\Tucil2_Stima master\Tucil2_Stima\test\test5_compressed.jpg
+   - Output GIF Path: C:\Users\balse\Documents\VScode\Tucil2_Stima master\Tucil2_Stima\test\test5_compressed_transform.gif
    ```
 
 4. **File output**:
-   - Gambar terkompresi: `test/sample_compressed.png`
-   - File GIF: `test/sample_quadtree.gif`
-   - Statistik: `test/sample_stats.txt`
+   - Gambar terkompresi
+   - File GIF
+
 
 ## Author
 | Nama              | NIM      | Kelas IF2211 |
